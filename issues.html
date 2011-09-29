@@ -23,14 +23,15 @@ $(function() {
 			}
 		}
 		$.each( uniqueIssues, function( index, value ){
-			$("#issues").append( '<li id="' + index.split(' ').join('')  + '">' );
-			$( "#" + index.split(' ').join('') ).append( uniqueIssues[ index ][ 0 ].title.split( "-" )[ 0 ] ) ;
-			$("#" + index.split(' ').join('') ).append( '<ul id="inner' + index.split(' ').join('')+ '">' );
+			var joinedTitle = index.split(' ').join('');
+			$("#issues").append( '<li id="' + joinedTitle + '">' );
+			$( "#" + joinedTitle ).append( uniqueIssues[ index ][ 0 ].title.split( "-" )[ 0 ] + " --  " + uniqueIssues[ index ].length + " issues"  ) ;
+			$("#" + joinedTitle ).append( '<ul id="inner' + joinedTitle + '">' );
 			$.each( uniqueIssues[ index ] , function( i, v ){
-				$("#inner" + index.split(' ').join('') ).append( '<li id ="' + index.split(' ').join('') + 'in' + i + '">' );
+				$("#inner" + index.split(' ').join('') ).append( '<li id ="' + joinedTitle + 'in' + i + '">' );
 				var comp = uniqueIssues[ index ][ i ].title.split( "-" );
 				comp.shift();
-				$("#" + index.split(' ').join('') + 'in' + i).append( "#" + uniqueIssues[ index ][ i ].number + " " + comp.join() + "<p>" + uniqueIssues[ index ][ i ].body + "</p>" );
+				$("#" + joinedTitle + 'in' + i).append( "#" + uniqueIssues[ index ][ i ].number + " " + comp.join() + "<p>" + uniqueIssues[ index ][ i ].body + "</p>" );
 			})
 
 
