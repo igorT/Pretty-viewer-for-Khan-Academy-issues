@@ -2,6 +2,8 @@
 <head>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="listCollapse.js"></script>
+
 <script>
 
 $(function() {
@@ -11,9 +13,9 @@ $(function() {
 		var i = 0;
 		for( i = 0; i < issues.length; i++ ){
 			if( issues[ i ].user == "KhanBugz" ){
-				var title = issues[ i ].title.split( "-" );
+				var title = issues[ i ].title.split( "-" )[ 0 ];
 				if( title in uniqueIssues ){
-					uniqueIssues[ title ].concat( [ issues[ i ] ] );
+					uniqueIssues[ title ] = uniqueIssues[ title ].concat( [ issues[ i ] ] );
 				} 
 				else{
 					uniqueIssues[ title ] = [ issues[ i ] ];
@@ -21,10 +23,20 @@ $(function() {
 			}
 		}
 		$.each( uniqueIssues, function( index, value ){
-			$("#issues").append("<li>" + value[ 0 ].title + "</li>" );
+			$("#issues").append( '<li id="' + index.split(' ').join('')  + '">' );
+			$( "#" + index.split(' ').join('') ).append( uniqueIssues[ index ][ 0 ].title.split( "-" )[ 0 ] ) ;
+			$("#" + index.split(' ').join('') ).append( '<ul id="inner' + index.split(' ').join('')+ '">' );
+			$.each( uniqueIssues[ index ] , function( i, v ){
+				$("#inner" + index.split(' ').join('') ).append( '<li id ="' + index.split(' ').join('') + 'in' + i + '">' );
+				var comp = uniqueIssues[ index ][ i ].title.split( "-" );
+				comp.shift();
+				$("#" + index.split(' ').join('') + 'in' + i).append( "#" + uniqueIssues[ index ][ i ].number + " " + comp.join() + "<p>" + uniqueIssues[ index ][ i ].body + "</p>" );
+			})
 
+
+			
 		});	
-		alert( data.issues.length );
+		  compactMenu('issues',true,'&plusmn; ');
 
 	});
 })
