@@ -1,0 +1,37 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script>
+
+$(function() {
+	$.getJSON('http://github.com/api/v2/json/issues/list/Khan/khan-exercises/open?callback=?', function(data) {
+		var issues = data.issues;
+		var uniqueIssues = {};
+		var i = 0;
+		for( i = 0; i < issues.length; i++ ){
+			if( issues[ i ].user == "KhanBugz" ){
+				var title = issues[ i ].title.split( "-" );
+				if( title in uniqueIssues ){
+					uniqueIssues[ title ].concat( [ issues[ i ] ] );
+				} 
+				else{
+					uniqueIssues[ title ] = [ issues[ i ] ];
+				}
+			}
+		}
+		$.each( uniqueIssues, function( index, value ){
+			$("#issues").append("<li>" + value[ 0 ].title + "</li>" );
+
+		});	
+		alert( data.issues.length );
+
+	});
+})
+
+</script>
+</head>
+<body>
+	<ul id="issues"></ul>
+</body>
+</html>
