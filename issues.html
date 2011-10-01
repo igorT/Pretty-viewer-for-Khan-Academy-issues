@@ -11,6 +11,8 @@ $(function() {
 		var issues = data.issues;
 		var uniqueIssues = {};
 		var i = 0;
+		//First go and build a dict of unique exercises and their issues
+
 		for( i = 0; i < issues.length; i++ ){
 			if( issues[ i ].user == "KhanBugz" ){
 				var title = issues[ i ].title.split( "-" )[ 0 ];
@@ -22,10 +24,12 @@ $(function() {
 				}
 			}
 		}
+
+		//Then print them
 		$.each( uniqueIssues, function( index, value ){
 			var joinedTitle = index.split(' ').join('');
 			$("#issues").append( '<li id="' + joinedTitle + '">' );
-			$( "#" + joinedTitle ).append( uniqueIssues[ index ][ 0 ].title.split( "-" )[ 0 ] + " --  " + uniqueIssues[ index ].length + " issues"  ) ;
+			$( "#" + joinedTitle ).append( uniqueIssues[ index ][ 0 ].title.split( "-" )[ 0 ] + " -- " + uniqueIssues[ index ].length + " issues"  ) ;
 			$("#" + joinedTitle ).append( '<ul id="inner' + joinedTitle + '">' );
 			$.each( uniqueIssues[ index ] , function( i, v ){
 				$("#inner" + index.split(' ').join('') ).append( '<li id ="' + joinedTitle + 'in' + i + '">' );
@@ -33,11 +37,10 @@ $(function() {
 				comp.shift();
 				$("#" + joinedTitle + 'in' + i).append( "<a href = 'https://github.com/Khan/khan-exercises/issues/" + uniqueIssues[ index ][ i ].number + "'>#" + uniqueIssues[ index ][ i ].number + " " + comp.join() + "</a><p>" + uniqueIssues[ index ][ i ].body + "</p>" );
 			})
-
-
-			
 		});	
-		  compactMenu('issues',true,'&plusmn; ');
+
+		//Use the listCollapse library to make a collapsible list( duh )
+	  compactMenu('issues',true,'&plusmn; ');
 
 	});
 })
